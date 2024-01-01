@@ -2,12 +2,12 @@
 name = exprtk
 
 [download]
-url = https://github.com/ArashPartow/exprtk/archive/refs/tags/0.0.1.tar.gz
-sha256 = fb72791c88ae3b3426e14fdad630027715682584daf56b973569718c56e33f28
+url = https://github.com/ArashPartow/exprtk/archive/refs/tags/0.0.3.tar.gz
+sha256 = 6c412af7862acdfea74c092e71d33cfc32e8aa361fe535affc86665bf21acef6
 
 [build.not(os=windows)]
 builder = nop
-subdir = exprtk-0.0.1
+subdir = exprtk-0.0.3
 
 [install.files]
 exprtk.hpp = exprtk.hpp
