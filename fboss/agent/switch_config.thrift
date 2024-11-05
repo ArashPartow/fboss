@@ -605,6 +605,7 @@ enum AclStage {
   INGRESS = 0,
   INGRESS_MACSEC = 1,
   EGRESS_MACSEC = 2,
+  EGRESS = 3,
 }
 
 // startdocs_AclTableGroup_struct
@@ -1712,7 +1713,7 @@ struct SwitchSettings {
   20: optional byte sramGlobalFreePercentXonThreshold;
   // Fabric side threshold tracking the minimum needed
   // fifo free space on the peer device fifo.
-  21: optional i16 fabricCllfcTxCreditThreshold;
+  21: optional i16 linkFlowControlCreditThreshold;
   // SRAM2DRAM threshold on VOQ. Single parameter as of now
   // controlling both bounds and recovery thresholds.
   22: optional i32 voqDramBoundThreshold;

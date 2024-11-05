@@ -1107,10 +1107,8 @@ std::shared_ptr<SwitchState> SaiSwitch::stateChangedImplLocked(
       // remove default acl table and add a new one. table removal should
       // clear acl entries too
       managerTable_->switchManager().resetIngressAcl();
-      managerTable_->aclTableManager().removeDefaultAclTable(
-          cfg::AclStage::INGRESS);
-      managerTable_->aclTableManager().addDefaultAclTable(
-          cfg::AclStage::INGRESS);
+      managerTable_->aclTableManager().removeDefaultIngressAclTable();
+      managerTable_->aclTableManager().addDefaultIngressAclTable();
       managerTable_->switchManager().setIngressAcl();
     }
 
@@ -1357,6 +1355,26 @@ void SaiSwitch::processSwitchSettingsChangeSansDrainedEntryLocked(
     if (oldSramGlobalXonTh != newSramGlobalXonTh) {
       managerTable_->switchManager().setSramGlobalFreePercentXonTh(
           newSramGlobalXonTh.value_or(0));
+    }
+  }
+  {
+    const auto oldLinkFlowControlCreditTh =
+        oldSwitchSettings->getLinkFlowControlCreditThreshold();
+    const auto newLinkFlowControlCreditTh =
+        newSwitchSettings->getLinkFlowControlCreditThreshold();
+    if (oldLinkFlowControlCreditTh != newLinkFlowControlCreditTh) {
+      managerTable_->switchManager().setLinkFlowControlCreditTh(
+          newLinkFlowControlCreditTh.value_or(0));
+    }
+  }
+  {
+    const auto oldVoqDramBoundTh =
+        oldSwitchSettings->getVoqDramBoundThreshold();
+    const auto newVoqDramBoundTh =
+        newSwitchSettings->getVoqDramBoundThreshold();
+    if (oldVoqDramBoundTh != newVoqDramBoundTh) {
+      managerTable_->switchManager().setVoqDramBoundTh(
+          newVoqDramBoundTh.value_or(0));
     }
   }
 }
@@ -2564,8 +2582,7 @@ void SaiSwitch::initStoreAndManagersLocked(
             std::make_shared<AclTableGroup>(cfg::AclStage::INGRESS);
         managerTable_->aclTableGroupManager().addAclTableGroup(aclTableGroup);
 
-        managerTable_->aclTableManager().addDefaultAclTable(
-            cfg::AclStage::INGRESS);
+        managerTable_->aclTableManager().addDefaultIngressAclTable();
       }
     }
 
